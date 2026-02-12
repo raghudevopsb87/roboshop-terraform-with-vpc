@@ -13,7 +13,7 @@ resource "aws_instance" "instances" {
   for_each      = var.components
   ami           = var.ami
   instance_type = var.instance_type
-  vpc_security_group_ids = aws_security_group.instances[each.key].id
+  vpc_security_group_ids = [aws_security_group.instances[each.key].id]
   subnet_id = aws_subnet.private[0].id
 
   tags = {
