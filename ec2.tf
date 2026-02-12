@@ -41,7 +41,7 @@ resource "aws_security_group_rule" "allow_all" {
 resource "aws_instance" "instances" {
   for_each      = var.components
   ami           = var.ami
-  instance_type = var.instance_type
+  instance_type = each.value["instance_type"]
   vpc_security_group_ids = [aws_security_group.instances[each.key].id]
   subnet_id = aws_subnet.private[0].id
 
