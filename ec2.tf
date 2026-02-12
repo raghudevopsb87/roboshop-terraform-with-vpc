@@ -5,8 +5,37 @@ resource "aws_security_group" "instances" {
   vpc_id      = aws_vpc.main.id
 
   tags = {
-    Name = "allow_tls"
+    Name = "${each.key}-${var.env}-sg"
   }
+}
+
+resource "aws_security_group_rule" "instances" {
+  for_each          = var.components
+  type              = "ingress"
+  from_port         = each.value["port"]
+  to_port           = each.value["port"]
+  protocol          = "tcp"
+  cidr_blocks       = each.value["allow_cidr"]
+  security_group_id = aws_security_group.instances[each.key].id
+}
+
+resource "aws_security_group_rule" "ssh" {
+  for_each          = var.components
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = var.bastion_ips
+  security_group_id = aws_security_group.instances[each.key].id
+}
+
+resource "aws_security_group_rule" "allow_all" {
+  for_each          = var.components
+  type              = "egress"
+  to_port           = 0
+  protocol          = "-1"
+  from_port         = 0
+  security_group_id = aws_security_group.instances[each.key].id
 }
 
 resource "aws_instance" "instances" {

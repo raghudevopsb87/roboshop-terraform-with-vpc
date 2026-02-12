@@ -8,14 +8,30 @@ default_vpc_id = "vpc-0f995da5da96d9248"
 default_vpc_cidr = "172.31.0.0/16"
 default_vpc_rt = "rtb-0e3824c9d7ee324c4"
 components = {
-  mongodb = ""
-  mysql = ""
-  rabbitmq = ""
-  redis = ""
+  mongodb = {
+    instance_type = "t3.small"
+    port          = "27017"
+    allow_cidr    = ["10.0.3.0/24", "10.0.2.0/24"]
+  }
+  mysql = {
+    instance_type = "t3.small"
+    port          = "3306"
+    allow_cidr    = ["10.0.3.0/24", "10.0.2.0/24"]
+  }
+  rabbitmq = {
+    instance_type = "t3.small"
+    port          = "5672"
+    allow_cidr    = ["10.0.3.0/24", "10.0.2.0/24"]
+  }
+  redis = {
+    instance_type = "t3.small"
+    port          = "6379"
+    allow_cidr    = ["10.0.3.0/24", "10.0.2.0/24"]
+  }
 }
 
 ami = "ami-045a533d19c34eeb6"
-instance_type = "t3.small"
 zone_id = "Z057881017RC0RRKVUX8E"
+bastion_ips = ["172.31.72.54/32"]
 
 

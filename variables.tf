@@ -11,4 +11,5 @@ variable "components" {}
 variable "ami" {}
 variable "instance_type" {}
 variable "zone_id" {}
+variable "bastion_ips" {}
 
